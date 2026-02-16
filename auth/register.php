@@ -1,6 +1,6 @@
 <?php
-require './config/database.php ';
-  
+require '../config/database.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
@@ -20,9 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("sss", $name, $email, $hashed_password);
 
         if ($stmt->execute()) {
-            echo "Registrasi berhasil!";
+            header("Location: login.php?success=1");
+            exit();
         } else {
-            echo "Error: " . $stmt->error;
+            $error = "Error: {$stmt->error}";
         }
 
         $stmt->close();
@@ -34,23 +35,39 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <title>Form Registrasi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi - Task Management</title>
+    <link rel="stylesheet" href="../style/style.css">
 </head>
-<body>
-    <h2>Form Registrasi</h2>
-    <form method="POST" action="">
-        <label for="name">Nama:</label><br>
-        <input type="text" id="name" name="name" required><br><br>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <input type="submit" value="Daftar">
-    </form>
+<body class="auth-page">
+    <div class="container">
+        <h2>Form Registrasi</h2>
+        <?php if (isset($error)): ?>
+            <div class="error"><?= $error ?></div>
+        <?php endif; ?>
+        <form method="POST" action="">
+            <div class="form-group">
+                <label for="name">Nama:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <input type="submit" value="Daftar">
+        </form>
+        <div class="link">
+            Sudah punya akun? <a href="login.php">Login di sini</a>
+        </div>
+    </div>
 </body>
+
 </html>
