@@ -1,16 +1,16 @@
 <?php
 
-function loginUser($email, $password, $conn)
+function loginUser($login, $password, $conn)
 {
-    if (empty($email) || empty($password)) {
+    if (empty($login) || empty($password)) {
         return [
             'success' => false,
-            'message' => 'Email dan password wajib diisi'
+            'message' => 'Email/Username dan password wajib diisi'
         ];
     }
 
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
+    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ? OR username = ?");
+    $stmt->bind_param("ss", $login);
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -50,6 +50,16 @@ function registerUser($username, $email, $password, $confirm)
 
     if ($password !== $confirm) {
         return ['success' => false, 'message' => 'Konfirmasi password tidak sesuai!'];
+    }
+
+    // Cek apakah email sudah terdaftar
+    $checkEmail = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    $checkEmail->bind_param("s", $email);
+    $checkEmail->execute();
+    $checkEmail->store_result();
+
+    if ($checkEmail->num_rows > 0) {
+        return ['success' => false, 'message' => 'Email sudah terdaftar'];
     }
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);

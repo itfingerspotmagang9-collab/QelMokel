@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = registerUser($username, $email, $password,  $confirm);
 
     if ($result['success']) {
-        header("Location: login.php");
+        header("Location: ../views/auth/login_view.php");
         exit;
     } else {
         $error = $result['message'];

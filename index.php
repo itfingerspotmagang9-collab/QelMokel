@@ -20,8 +20,8 @@ if (isset($_SESSION['user_id'])) {
         <h1>Task Management System</h1>
         <p>Kelola tugas Anda dengan mudah dan efisien</p>
         <div class="buttons">
-            <a href="auth/login.php" class="btn btn-primary">Login</a>
-            <a href="auth/register.php" class="btn btn-secondary">Register</a>
+            <a href="views/auth/login_view.php" class="btn btn-primary">Login</a>
+            <a href="views/auth/register_view.php" class="btn btn-secondary">Register</a>
         </div>
     </div>
 </body>
