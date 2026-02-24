@@ -5,6 +5,12 @@ require '../config/database.php';
 require '../services/auth_service.php';
 require '../helpers/helper.php';
 
+// Cek pesan sukses registrasi
+$successMessage = null;
+if (isset($_GET['registered']) && $_GET['registered'] == 1) {
+    $successMessage = 'Registrasi berhasil! Silakan login.';
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = $_POST['email'] || $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -15,6 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $result['user']['id'];
         redirect('../views/dashboard_view.php');
     } else {
-        echo $result['message'];
+        $error = $result['message'];
     }
 }

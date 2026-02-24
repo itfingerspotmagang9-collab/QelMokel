@@ -19,7 +19,7 @@ function loginUser($login, $password, $conn)
     if (!$user) {
         return [
             'success' => false,
-            'message' => 'Email tidak ditemukan'
+            'message' => 'Email/Username tidak ditemukan'
         ];
     }
 
@@ -66,6 +66,8 @@ function registerUser($username, $email, $password, $confirm)
 
     $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $email, $hashedPassword);
+
+    
 
     if ($stmt->execute()) {
         return ['success' => true];

@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = registerUser($username, $email, $password,  $confirm);
 
     if ($result['success']) {
+        echo "<script>alert('Selamat, register berhasil')</script>";
         header("Location: ../views/auth/login_view.php");
         exit;
     } else {
